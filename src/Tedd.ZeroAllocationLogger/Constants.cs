@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Tedd.ZeroAllocationLogger;
-internal class Constants
+internal static class Constants
 {
     public const int FlushThreshold = 6_553_600; // How many bytes to write before flushing (64KB).
     public const long FlushBeforeRemapping = FlushThreshold * 100; // If we exceed this, we remap the file to a larger size (MB)

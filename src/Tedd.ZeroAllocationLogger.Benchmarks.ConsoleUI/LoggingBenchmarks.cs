@@ -31,8 +31,8 @@ public class LoggingBenchmarks
     private const string ZeroAllocLogFileName = "ZeroAllocLog.log";
     private const string NetLoggerFileName = "NetLogger.log";
 
-    private ILogger<LoggingBenchmarks> _netLogger;
-    private ILoggerFactory _loggerFactory;
+    private ILogger<LoggingBenchmarks> _netLogger = null!;
+    private ILoggerFactory _loggerFactory = null!;
 
     private static readonly string TestString = "This is a test log message.";
     private static readonly byte[] TestUtf8String = Encoding.UTF8.GetBytes(TestString);

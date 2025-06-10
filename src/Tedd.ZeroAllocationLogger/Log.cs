@@ -73,7 +73,11 @@ public static unsafe class Log
     /// A disposable token representing an acquired lock for atomic logging operations.
     /// Use with a 'using' statement to ensure the lock is always released.
     /// </summary>
+#pragma warning disable CA1815
+#pragma warning disable CA1034
     public readonly struct ScopedLockToken : IDisposable
+#pragma warning restore CA1034
+#pragma warning restore CA1815
     {
         // The lock instance to release.
         // ReSharper disable once MemberHidesStaticFromOuterClass
@@ -118,8 +122,10 @@ public static unsafe class Log
             //    _position = 0; // Circular buffer
             //}
             if (_position + data.Length > _capacity)
+#pragma warning disable CA2201
                 throw new OutOfMemoryException(
                     $"Log line would exceed the memory mapped file capacity: Current position {_position} + data.Length {data.Length} = {_position + data.Length} > capacity {_capacity}");
+#pragma warning restore CA2201
 
             // Directly use the cached pointer.
             byte* destinationPtr = _basePtr + _position;
@@ -136,7 +142,7 @@ public static unsafe class Log
     }
 
     #region Lifecycle and Helper Methods
-    private static void OnProcessExit(object sender, EventArgs e) => Dispose();
+    private static void OnProcessExit(object? sender, EventArgs e) => Dispose();
 
     public static void Dispose()
     {
@@ -225,7 +231,7 @@ public static unsafe class Log
             // Truncate the file to the actual log length (_position)
             if (!wasOpen) return;
 
-            using var fs = new FileStream(_filePath, FileMode.Open, FileAccess.Write, FileShare.Read);
+            using var fs = new FileStream(_filePath!, FileMode.Open, FileAccess.Write, FileShare.Read);
             fs.SetLength(_position);
         }
     }
@@ -260,8 +266,8 @@ public static unsafe class Log
                 return;
 
             CloseMemoryMapped();
-            var size = GetMemoryMappedFileAllocationSize(_filePath);
-            OpenMemoryMapped(_filePath, size);
+            var size = GetMemoryMappedFileAllocationSize(_filePath!);
+            OpenMemoryMapped(_filePath!, size);
         }
     }
 

@@ -55,7 +55,7 @@ public unsafe class Logger
         CloseMemoryMapped();
     }
 
-    private long SafeGetFileLength(string filePath)
+    private static long SafeGetFileLength(string filePath)
     {
         var fi = new FileInfo(filePath);
         if (fi.Exists)
@@ -64,7 +64,7 @@ public unsafe class Logger
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private long GetMemoryMappedFileAllocationSize(string filePath) => SafeGetFileLength(filePath) + Constants.FlushBeforeRemappingSafety;
+    private static long GetMemoryMappedFileAllocationSize(string filePath) => SafeGetFileLength(filePath) + Constants.FlushBeforeRemappingSafety;
 
 
     #region Locking
@@ -73,7 +73,11 @@ public unsafe class Logger
     /// A disposable token representing an acquired lock for atomic logging operations.
     /// Use with a 'using' statement to ensure the lock is always released.
     /// </summary>
+#pragma warning disable CA1815
+#pragma warning disable CA1034
     public readonly struct ScopedLockToken(Lock @lock) : IDisposable
+#pragma warning restore CA1034
+#pragma warning restore CA1815
     {
         public void Dispose()
         {
@@ -116,8 +120,10 @@ public unsafe class Logger
             //    _position = 0; // Circular buffer
             //}
             if (_position + data.Length > _capacity)
+#pragma warning disable CA2201
                 throw new OutOfMemoryException(
                     $"Log line would exceed the memory mapped file capacity: Current position {_position} + data.Length {data.Length} = {_position + data.Length} > capacity {_capacity}");
+#pragma warning restore CA2201
 
             // Directly use the cached pointer.
             byte* destinationPtr = _basePtr + _position;
@@ -134,7 +140,7 @@ public unsafe class Logger
     }
 
     #region Lifecycle and Helper Methods
-    private void OnProcessExit(object sender, EventArgs e) => Dispose();
+    private void OnProcessExit(object? sender, EventArgs e) => Dispose();
 
     public void Dispose()
     {
@@ -223,7 +229,7 @@ public unsafe class Logger
             // Truncate the file to the actual log length (_position)
             if (!wasOpen) return;
 
-            using var fs = new FileStream(_filePath, FileMode.Open, FileAccess.Write, FileShare.Read);
+            using var fs = new FileStream(_filePath!, FileMode.Open, FileAccess.Write, FileShare.Read);
             fs.SetLength(_position);
         }
     }
@@ -258,8 +264,8 @@ public unsafe class Logger
                 return;
 
             CloseMemoryMapped();
-            var size = GetMemoryMappedFileAllocationSize(_filePath);
-            OpenMemoryMapped(_filePath, size);
+            var size = GetMemoryMappedFileAllocationSize(_filePath!);
+            OpenMemoryMapped(_filePath!, size);
         }
     }
 
