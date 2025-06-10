@@ -4,6 +4,7 @@
 
 namespace Tedd.ZeroAllocationLogger.Tests;
 
+[Collection("Sequential")]
 public class StaticLoggerTests : IDisposable
 {
     private readonly string _testFileName = "Test.log";
