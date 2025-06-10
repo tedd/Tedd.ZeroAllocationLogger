@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <Description>Zero allocation file logger.</Description>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>logging;logger;zero-allocation;fast</PackageTags>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <Version>1.0.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageProjectUrl>https://github.com/tedd/Tedd.ZeroAllocationLogger</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tedd/Tedd.ZeroAllocationLogger.git</RepositoryUrl>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryType>git</RepositoryType>
+    <Authors>tedd</Authors>
+    <Company>Tedd Hansen</Company>
+    <Copyright>Tedd Hansen</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
